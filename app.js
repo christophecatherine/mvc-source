@@ -2,9 +2,15 @@
 const express = require('express')
 const exphbs = require('express-handlebars');
 
+// Allez chercher Mongoose
+const mongoose = require('mongoose');
+
 
 // Notre app va chercher express
 const app = express();
+
+//Connect mongoose a base de donnee
+mongoose.connect('mongodb://localhost:27017/blog');
 
 // Notre app utile express static pour les dossier 'public'
 app.use(express.static('public'));
