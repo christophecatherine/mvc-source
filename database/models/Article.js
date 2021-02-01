@@ -2,10 +2,9 @@
 const mongoose = require('mongoose')
 
 //Creer un nouvel article dans schema 
-const ArticleSchema = new mongoose.Schema ({
+const ArticleSchema = new mongoose.Schema({
 
     title: String,
-    intro: String,
     content: String,
 
 })
