@@ -40,14 +40,12 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 //demande vers index et la syncroniser
-app.get("/", async(req, res) => {
+app.get("/", async (req, res) => {
 
     const posts = await Post.find({}).lean()
-    console.log(posts);
 
-    res.render("index", {
-        posts
-    })
+
+    res.render("index", { posts })
 })
 
 //demande vers contact  
@@ -81,7 +79,7 @@ app.post("/articles/post", (req, res) => {
 
 
 //ecoute vers le port 3000
-app.listen(3000, function() {
+app.listen(3000, function () {
     console.log("Le serveur tourne sur le port 3000");
 
 })
