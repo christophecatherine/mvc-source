@@ -1,0 +1,48 @@
+<form action="/articles/post" method="POST" enctype="multipart/form-data">
+    <div class="field">
+        <label class="label">Titre de l'article</label>
+        <div class="control">
+            {{!-- !!! ne pas oublier le name='name' pour l'arch du body !!! --}}
+            <input class="input" type="text" name='title' placeholder="Text input">
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Contenu</label>
+        <div class="control">
+            {{!-- !!! ne pas oublier le name='content' pour l'arch du body !!! --}}
+            <textarea class="textarea" name='content' placeholder="Textarea"></textarea>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">auteur</label>
+        <div class="control">
+            {{!-- !!! ne pas oublier le name='name' pour l'arch du body !!! --}}
+            <input class="input" type="text" name='author' placeholder="Text input">
+        </div>
+    </div>
+    {{!--boutton--}}
+    <div class="file">
+        <label class="file-label">
+            <input class="file-input" type="file" name="image">
+            <span class="file-cta">
+                <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                    Envoyer une image format jpg
+                </span>
+            </span>
+        </label>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            {{!-- !!! ne pas ouyblier le type='submit' pour la validation de l'envoie du formulaire !!! --}}
+            <button type='submit' class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+            <button class="button is-link is-light">Cancel</button>
+        </div>
+    </div>
+</form>

@@ -6,10 +6,16 @@ const ArticleSchema = new mongoose.Schema({
 
     title: String,
     content: String,
+    author: String,
+    image: String,
+    createDate: {
+        type: Date,
+        default: new Date()
+    }
 
 })
 
-// Creer un model deans article qui est associer a article schema
+// Creer un model dans article qui est associer a article schema
 const Article = mongoose.model('Article', ArticleSchema)
 
 // export de notre model 
