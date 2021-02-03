@@ -17,6 +17,12 @@ const app = express();
 // Notre app va chercher 'path'
 const path = require('path');
 
+//Controller 
+const articleSingleController = require('./controllers/articleSingle')
+const articleAddController = require('./controllers/createArticle')
+const homePage = require('./controllers/homePage')
+
+
 // Notre app utile fileupload
 app.use(fileUpload());
 
@@ -42,9 +48,7 @@ var MomentHandler = require("handlebars.moment");
 MomentHandler.registerHelpers(Handlebars);
 
 
-//Post
-// creer une variable Post qui renvoie vers Article
-const Post = require("./database/models/Article")
+
 
 // Notre app utile express static pour les dossier 'public'
 app.use(express.static('public'));
@@ -55,29 +59,25 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
-//Requete de Middlware
+//Requete de Middlware si tu trouves pas le fichier tu continue vers la page 
 
 const middleware = (req, res, next) => {
 
+    if (!req.files) {
+        return res.redirect('/')
+    }
     console.log("Je suis le Middleware");
     next()
 }
 
-//demande vers middleware
+//demande si tu vois cette variable tu applique middleware
 
-app.use(middleware)
+app.use("/articles/post", middleware)
 
 
 
-//demande vers index et la syncroniser
-app.get("/", async(req, res) => {
-
-    const posts = await Post.find({}).lean()
-
-    res.render("index", {
-        posts
-    })
-})
+//demande vers la page home
+app.get("/", homePage)
 
 //demande vers contact  
 app.get("/contact", (req, res) => {
@@ -87,32 +87,18 @@ app.get("/contact", (req, res) => {
 // Aticles //
 
 
-//renvoie vers articles plus id et synchroniser
-app.get("/articles/add", (req, res) => {
-    res.render("article/add")
-})
-
 //renvoie vers articles add
-app.get("/articles/:id", async(req, res) => {
-
-    const article = await Post.findById(req.params.id).lean()
-
-    //renvoie de la view articles avec les data article
-    res.render("articles", {
-        article
-    })
-})
+app.get("/articles/add", articleAddController)
 
 
-
-
-
+//renvoie vers articles plus id et synchroniser
+app.get("/articles/:id", articleSingleController)
 
 
 //poster un article
 app.post("/articles/post", (req, res) => {
 
-    //envoie le dossier image {destructuration de l'image} dans le dossier article 
+
     const {
         image
     } = req.files
@@ -131,13 +117,8 @@ app.post("/articles/post", (req, res) => {
     })
 })
 
-
-
-
-
-
 //ecoute vers le port 3000
-app.listen(3000, function() {
-    console.log("Le serveur tourne sur le port 3000");
+app.listen(3000, () => {
+    console.log(`Le serveur tourne sur le port 3000`);
 
 })
