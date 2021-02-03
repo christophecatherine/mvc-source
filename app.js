@@ -55,6 +55,20 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+//Requete de Middlware
+
+const middleware = (req, res, next) => {
+
+    console.log("Je suis le Middleware");
+    next()
+}
+
+//demande vers middleware
+
+app.use(middleware)
+
+
+
 //demande vers index et la syncroniser
 app.get("/", async(req, res) => {
 
@@ -72,22 +86,25 @@ app.get("/contact", (req, res) => {
 
 // Aticles //
 
+
 //renvoie vers articles plus id et synchroniser
+app.get("/articles/add", (req, res) => {
+    res.render("article/add")
+})
+
+//renvoie vers articles add
 app.get("/articles/:id", async(req, res) => {
-    console.log(req.params.id);
-    // 
+
     const article = await Post.findById(req.params.id).lean()
-    console.log(article);
+
     //renvoie de la view articles avec les data article
     res.render("articles", {
         article
     })
 })
 
-//renvoie vers articles add
-app.get("/article/add", (req, res) => {
-    res.render("article/add")
-})
+
+
 
 
 
