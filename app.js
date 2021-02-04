@@ -14,13 +14,22 @@ const fileUpload = require("express-fileupload");
 // Notre app va chercher express
 const app = express();
 
-// Notre app va chercher 'path'
-const path = require('path');
 
-//Controller 
+
+//Controller //
+//article
 const articleSingleController = require('./controllers/articleSingle')
-const articleAddController = require('./controllers/createArticle')
+const articleAddController = require('./controllers/articleAdd')
+const articlePostController = require('./controllers/articlePost')
 const homePage = require('./controllers/homePage')
+
+
+//User
+//creation d'un utilisateur
+const userCreate = require('./controllers/userCreate')
+
+//enregistre un utilisateur
+const userRegister = require('./controllers/userRegister')
 
 
 // Notre app utile fileupload
@@ -59,63 +68,45 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
+
+//Middleware
+
 //Requete de Middlware si tu trouves pas le fichier tu continue vers la page 
-
-const middleware = (req, res, next) => {
-
-    if (!req.files) {
-        return res.redirect('/')
-    }
-    console.log("Je suis le Middleware");
-    next()
-}
+const articleValidPost = require('./middleware/articleValidPost')
 
 //demande si tu vois cette variable tu applique middleware
-
-app.use("/articles/post", middleware)
+app.use("/articles/post", articleValidPost)
 
 
 
 //demande vers la page home
 app.get("/", homePage)
 
+
+
+// Aticles //
+//renvoie vers articles add
+app.get("/articles/add", articleAddController)
+
+
+//renvoie vers articles plus id 
+app.get("/articles/:id", articleSingleController)
+
+
+//renvoie vers articles post
+app.post("/articles/post", articlePostController)
+
+//Users
+app.get("/user/create", userCreate)
+app.post('/User/register', userRegister)
+
+//Contact
+
 //demande vers contact  
 app.get("/contact", (req, res) => {
     res.render("contact")
 })
 
-// Aticles //
-
-
-//renvoie vers articles add
-app.get("/articles/add", articleAddController)
-
-
-//renvoie vers articles plus id et synchroniser
-app.get("/articles/:id", articleSingleController)
-
-
-//poster un article
-app.post("/articles/post", (req, res) => {
-
-
-    const {
-        image
-    } = req.files
-
-    // envoie du fichier image dans articles 
-    const uploadFile = path.resolve(__dirname, 'public/articles', image.name)
-
-    //deplacement du fichier image 
-    image.mv(uploadFile, (error) => {
-        Post.create({
-            ...req.body,
-            image: `/articles/${image.name}`
-        }, (error, post) => {
-            res.redirect('/')
-        })
-    })
-})
 
 //ecoute vers le port 3000
 app.listen(3000, () => {

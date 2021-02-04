@@ -1,14 +1,19 @@
 //Post
-// creer une variable Post qui renvoie vers Article
-
-
+//requete de la variable Post vers notre base de donnée Article
 const Post = require("../database/models/Article")
 
-module.exports = async (req, res) => {
 
+/*pour exporter notre module dans la base de donnée et 
+synchronise la requete et la reponse */
+module.exports = async(req, res) => {
+
+    // variable posts attend de trouver 
     const posts = await Post.find({}).lean()
 
+    // reponse vers l'index
     res.render("index", {
-        posts
-    })
+            posts
+        }
+
+    )
 }
