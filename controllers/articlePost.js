@@ -3,6 +3,7 @@ const path = require('path');
 //requete de la variable post vers notre base de donnée Article
 const Post = require("../database/models/Article")
 
+//pour exporter notre module dans la base de donnée 
 module.exports = (req, res) => {
 
     const {

@@ -7,14 +7,27 @@ const mongoose = require('mongoose')
 //Creer un nouvel article dans schema 
 const UserSchema = new mongoose.Schema({
 
-    name: String,
-    email: String,
-    password: String
+    //le nom est de type string et requiere vrai
+    name: {
+        type: String,
+        require: true
+    },
+
+    //l'email est de type string et requiere vrai et est unique 
+    email: {
+        type: String,
+        require: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        require: true
+    },
 
 })
 
 //securiser avec le middleware
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
 
     //constante this pour recuperer user schema 
     const user = this

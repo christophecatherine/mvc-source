@@ -31,6 +31,12 @@ const userCreate = require('./controllers/userCreate')
 //enregistre un utilisateur
 const userRegister = require('./controllers/userRegister')
 
+// user login
+const userLogin = require('./controllers/userLogin')
+
+//user login authentification
+const userLoginAuth = require('./controllers/userLoginAuth')
+
 
 // Notre app utile fileupload
 app.use(fileUpload());
@@ -70,7 +76,6 @@ app.set('view engine', 'handlebars');
 
 
 //Middleware
-
 //Requete de Middlware si tu trouves pas le fichier tu continue vers la page 
 const articleValidPost = require('./middleware/articleValidPost')
 
@@ -99,6 +104,8 @@ app.post("/articles/post", articlePostController)
 //Users
 app.get("/user/create", userCreate)
 app.post('/User/register', userRegister)
+app.get('/User/login', userLogin)
+app.post('/user/loginAuth', userLoginAuth)
 
 //Contact
 
