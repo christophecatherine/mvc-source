@@ -10,6 +10,8 @@ module.exports = async(req, res) => {
     // variable posts attend de trouver 
     const posts = await Post.find({}).lean()
 
+    console.log(req.session);
+
     // reponse vers l'index
     res.render("index", {
             posts

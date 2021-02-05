@@ -11,9 +11,31 @@ const bodyParser = require('body-parser');
 // Notre app va chercher fileupload
 const fileUpload = require("express-fileupload");
 
+// notre app va chercher express-session
+const expressSession = require('express-session')
+
+//Notre app va chercher connect-mongo
+const MongoStore = require('connect-mongo')
+
 // Notre app va chercher express
 const app = express();
 
+
+const mongoStore = MongoStore(expressSession)
+
+//Notre app utile expressSession
+app.use(expressSession({
+    secret: 'securite',
+    name: 'biscuit',
+    //sauvagarde ce qui n'est pas initialise
+    saveUninitialized: true,
+    resave: false,
+
+    store / new mongoStore(
+
+
+    )
+}))
 
 
 //Controller //
@@ -36,6 +58,7 @@ const userLogin = require('./controllers/userLogin')
 
 //user login authentification
 const userLoginAuth = require('./controllers/userLoginAuth')
+
 
 
 // Notre app utile fileupload
