@@ -5,6 +5,9 @@ const exphbs = require('express-handlebars');
 // Allez chercher Mongoose
 const mongoose = require('mongoose');
 
+//Notre app va chercher connect-mongo
+const MongoStore = require('connect-mongo');
+
 //Allez chercher body-parser
 const bodyParser = require('body-parser');
 
@@ -12,30 +15,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require("express-fileupload");
 
 // notre app va chercher express-session
-const expressSession = require('express-session')
+const expressSession = require('express-session');
 
-//Notre app va chercher connect-mongo
-const MongoStore = require('connect-mongo')
-
-// Notre app va chercher express
-const app = express();
-
-
-const mongoStore = MongoStore(expressSession)
-
-//Notre app utile expressSession
-app.use(expressSession({
-    secret: 'securite',
-    name: 'biscuit',
-    //sauvagarde ce qui n'est pas initialise
-    saveUninitialized: true,
-    resave: false,
-
-    store / new mongoStore(
-
-
-    )
-}))
 
 
 //Controller //
@@ -44,6 +25,8 @@ const articleSingleController = require('./controllers/articleSingle')
 const articleAddController = require('./controllers/articleAdd')
 const articlePostController = require('./controllers/articlePost')
 const homePage = require('./controllers/homePage')
+
+
 
 
 //User
@@ -59,10 +42,42 @@ const userLogin = require('./controllers/userLogin')
 //user login authentification
 const userLoginAuth = require('./controllers/userLoginAuth')
 
+// Notre app va chercher express
+const app = express();
 
 
-// Notre app utile fileupload
-app.use(fileUpload());
+
+
+//Connect mongoose a base de donnee
+mongoose.connect('mongodb://localhost:27017/blog-test', {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+})
+
+const mongoStore = MongoStore(expressSession)
+
+//Notre app utile expressSession
+app.use(expressSession({
+    secret: 'securite',
+    name: 'biscuit',
+    //sauvagarde ce qui n'est pas initialise
+    saveUninitialized: true,
+    resave: false,
+
+    store: new mongoStore(
+
+        {
+            mongooseConnection: mongoose.connection
+        }
+    )
+}))
+
+
+
+
+
+
 
 // Notre app utile body-parser.json
 app.use(bodyParser.json());
@@ -72,13 +87,15 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// Notre app utile fileupload
+app.use(fileUpload());
 
-//Connect mongoose a base de donnee
-mongoose.connect('mongodb://localhost:27017/blog-test', {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-})
+
+
+//Appel de notre variable dans la base de donnée 
+const auth = require ("./middleware/auth")
+
+
 
 //Creation de la date avec la fonction moment
 var Handlebars = require("handlebars");
@@ -105,7 +122,8 @@ const articleValidPost = require('./middleware/articleValidPost')
 //demande si tu vois cette variable tu applique middleware
 app.use("/articles/post", articleValidPost)
 
-
+//demande si tu vois cette variable tu applique middleware auth
+app.use("/articles/add", auth)
 
 //demande vers la page home
 app.get("/", homePage)
@@ -114,7 +132,7 @@ app.get("/", homePage)
 
 // Aticles //
 //renvoie vers articles add
-app.get("/articles/add", articleAddController)
+app.get("/articles/add", auth, articleAddController)
 
 
 //renvoie vers articles plus id 
@@ -122,7 +140,10 @@ app.get("/articles/:id", articleSingleController)
 
 
 //renvoie vers articles post
-app.post("/articles/post", articlePostController)
+app.post("/articles/post", auth, articleValidPost, articlePostController)
+
+
+
 
 //Users
 app.get("/user/create", userCreate)

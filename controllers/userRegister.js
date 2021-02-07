@@ -8,7 +8,13 @@ module.exports = (req, res) => {
         req.body, (error, user) => {
 
             if (error) {
-                
+
+               
+
+             const registerError = Object.keys(error.errors).map(key => error.errors[key].message);
+             req.session.registerError  = registerError   
+
+
                return res.redirect('/user/create')
             }
 

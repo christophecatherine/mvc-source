@@ -10,18 +10,18 @@ const UserSchema = new mongoose.Schema({
     //le nom est de type string et requiere vrai
     name: {
         type: String,
-        require: true
+        require: true,
     },
 
     //l'email est de type string et requiere vrai et est unique 
     email: {
         type: String,
         require: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        require: true
+        require: true,
     },
 
 })
