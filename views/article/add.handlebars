@@ -7,13 +7,16 @@
         </div>
     </div>
 
-    
+
 
     <div class="field">
         <label class="label">Contenu</label>
         <div class="control">
             {{!-- !!! ne pas oublier le name='content' pour l'arch du body !!! --}}
             <textarea class="textarea" name='content' placeholder="Textarea"></textarea>
+            <script>
+                CKEDITOR.replace('content');
+            </script>
         </div>
     </div>
     <div class="field">

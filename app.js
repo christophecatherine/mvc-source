@@ -11,6 +11,9 @@ const MongoStore = require('connect-mongo');
 //Notre app va chercher connect-flash
 const connectFlash = require('connect-flash')
 
+//Notre app va chercher stripTags
+const {stripTags} = require('./helpers/hbs')
+
 
 //Allez chercher body-parser
 const bodyParser = require('body-parser');
@@ -117,6 +120,10 @@ app.use(express.static('public'));
 
 //Route 
 app.engine('handlebars', exphbs({
+
+    helpers: {
+        stripTags: stripTags
+    },
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
@@ -170,6 +177,11 @@ app.get('/user/logout', userLogout)
 //demande vers contact  
 app.get("/contact", (req, res) => {
     res.render("contact")
+})
+
+//Error 404
+app.use( (req, res) => {
+    res.render('error404')
 })
 
 
