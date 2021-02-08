@@ -3,6 +3,7 @@ const User = require('../database/models/User')
 module.exports = (req, res, next) => {
 
     // Connecte toi dans la base de donnée
+    console.log('Midleware auth')
 
     User.findById(req.session.userId, (error, user) => {
 
@@ -10,7 +11,7 @@ module.exports = (req, res, next) => {
             return res.redirect('/')
 
         }
-        
+
         next()
     })
 

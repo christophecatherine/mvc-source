@@ -10,24 +10,26 @@ const UserSchema = new mongoose.Schema({
     //le nom est de type string et requiere vrai
     name: {
         type: String,
-        require: true,
+        required: [true, 'Le nom est obligatoire']
     },
 
-    //l'email est de type string et requiere vrai et est unique 
+    // l'email est de type string et requiere vrai et est unique 
     email: {
         type: String,
-        require: true,
+        required: [true, 'L\'email est obligatoire'],
         unique: true,
+
     },
+
     password: {
         type: String,
-        require: true,
+        required: [true, 'Le mots de passe est obligatoire']
     },
 
 })
 
 //securiser avec le middleware
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
 
     //constante this pour recuperer user schema 
     const user = this

@@ -5,18 +5,21 @@ const User = require('../database/models/User')
 // avec une condition error et user et tu redirige vers la page home
 module.exports = (req, res) => {
     User.create(
-        req.body, (error, user) => {
+        req.body,
+        (error, user) => {
 
             if (error) {
 
-               
 
-             const registerError = Object.keys(error.errors).map(key => error.errors[key].message);
-             req.session.registerError  = registerError   
+                const registerError = Object.keys(error.errors).map(key => error.errors[key].message);
+
+                req.flash('registerError', registerError)
+                req.flash('data', req.body)
 
 
-               return res.redirect('/user/create')
+                return res.redirect('/user/create')
             }
+
 
             res.redirect('/')
 

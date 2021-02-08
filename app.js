@@ -8,6 +8,10 @@ const mongoose = require('mongoose');
 //Notre app va chercher connect-mongo
 const MongoStore = require('connect-mongo');
 
+//Notre app va chercher connect-flash
+const connectFlash = require('connect-flash')
+
+
 //Allez chercher body-parser
 const bodyParser = require('body-parser');
 
@@ -42,6 +46,9 @@ const userLogin = require('./controllers/userLogin')
 //user login authentification
 const userLoginAuth = require('./controllers/userLoginAuth')
 
+//user logout
+const userLogout = require('./controllers/userLogout')
+
 // Notre app va chercher express
 const app = express();
 
@@ -52,10 +59,14 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/blog-test', {
     useNewUrlParser: true,
     useFindAndModify: false,
+    useCreateIndex: true,
     useUnifiedTopology: true
 })
 
 const mongoStore = MongoStore(expressSession)
+
+//Notre app utile connect-flash
+app.use(connectFlash())
 
 //Notre app utile expressSession
 app.use(expressSession({
@@ -74,11 +85,6 @@ app.use(expressSession({
 }))
 
 
-
-
-
-
-
 // Notre app utile body-parser.json
 app.use(bodyParser.json());
 
@@ -93,7 +99,8 @@ app.use(fileUpload());
 
 
 //Appel de notre variable dans la base de donnée 
-const auth = require ("./middleware/auth")
+const auth = require("./middleware/auth")
+const redirectAuthSuccess = require('./middleware/redirectAuthSucess')
 
 
 
@@ -113,6 +120,12 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
+app.use('*', (req, res, next) => {
+    res.locals.user = req.session.userId;
+    console.log(res.locals.user);
+    next()
+
+})
 
 
 //Middleware
@@ -146,10 +159,11 @@ app.post("/articles/post", auth, articleValidPost, articlePostController)
 
 
 //Users
-app.get("/user/create", userCreate)
-app.post('/User/register', userRegister)
-app.get('/User/login', userLogin)
-app.post('/user/loginAuth', userLoginAuth)
+app.get('/user/create', redirectAuthSuccess, userCreate)
+app.post('/user/register', redirectAuthSuccess, userRegister)
+app.get('/user/login', redirectAuthSuccess, userLogin)
+app.post('/user/loginAuth', redirectAuthSuccess, userLoginAuth)
+app.get('/user/logout', userLogout)
 
 //Contact
 

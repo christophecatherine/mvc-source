@@ -1,21 +1,21 @@
 <section class="section">
     <div class="container is-fullhd">
 
-        {{!--recupere l'error --}}
-        {{#each error}}
         <div class="content">
             <ol type="1">
+                {{!--recupere l'error --}}
+                {{#each errors}}
                 <li>{{this}}</li>
+                {{/each}}
             </ol>
         </div>
-        {{/each}}
 
         {{!--Formulaire utilisateur de registre avec un post et un ajout de photo multiforma --}}
         <form action="/user/register" method="POST" enctype="multipart/form-data">
             <div class="field">
                 <label class="label">Name</label>
                 <div class="control">
-                    <input class="input" type="text" name="name" placeholder="Text input">
+                    <input class="input" type="text" name="name" placeholder="Text input" value={{data.name}}>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input class="input" type="email" name="email" placeholder="Email input">
+                    <input class="input" type="email" name="email" placeholder="Email input" value={{data.email}}>
                     <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                     </span>
@@ -34,7 +34,7 @@
             {{!-- input password--}}
             <div class="field">
                 <p class="control has-icons-left">
-                    <input class="input" type="password" name="password" placeholder="Password">
+                    <input class="input" type="password" name="password" placeholder="Password" value={{data.password}}>
                     <span class="icon is-small is-left">
                         <i class="fas fa-lock"></i>
                     </span>

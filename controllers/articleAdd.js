@@ -4,6 +4,8 @@ const Post = require("../database/models/Article")
 //pour exporter notre module dans la base de donnée vers add
 module.exports = (req, res) => {
 
+    console.log('Controller Article Add')
+
     //si la requete session de l'id utilisateur alors renvoie vers article add
     if (req.session.userId) {
         return res.render("article/add")
