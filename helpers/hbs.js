@@ -1,6 +1,7 @@
-module.exports = {
+//pour exporter notre module dans la base de donnée 
 
-    stripTags : function (input) {
-        return input.replace(/<(?:.|\n)*?>/gm,'');
+module.exports = {
+    stripTags: function(input) {
+        return input.replace(/<(?:.|\n)*?>/gm, '');
     }
- }
+}

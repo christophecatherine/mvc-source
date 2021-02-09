@@ -15,8 +15,16 @@
             {{!-- !!! ne pas oublier le name='content' pour l'arch du body !!! --}}
             <textarea class="textarea" name='content' placeholder="Textarea"></textarea>
             <script>
-                CKEDITOR.replace('content');
+                CKEDITOR.replace('content', {
+                    entities_latin: false,
+                    uiColor: '#ff5cde'
+                })
             </script>
+
+            {{!--
+            <script>
+                CKEDITOR.replace('content');
+            </script>--}}
         </div>
     </div>
     <div class="field">

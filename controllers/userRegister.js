@@ -10,7 +10,7 @@ module.exports = (req, res) => {
 
             if (error) {
 
-
+                // permet de recuperer la cle avec flash pour creer un message error si les info ne sont pas tous requise 
                 const registerError = Object.keys(error.errors).map(key => error.errors[key].message);
 
                 req.flash('registerError', registerError)

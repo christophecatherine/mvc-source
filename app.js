@@ -12,7 +12,9 @@ const MongoStore = require('connect-mongo');
 const connectFlash = require('connect-flash')
 
 //Notre app va chercher stripTags
-const {stripTags} = require('./helpers/hbs')
+const {
+    stripTags
+} = require('./helpers/hbs')
 
 
 //Allez chercher body-parser
@@ -55,16 +57,19 @@ const userLogout = require('./controllers/userLogout')
 // Notre app va chercher express
 const app = express();
 
-
-
+require('dotenv').config()
 
 //Connect mongoose a base de donnee
-mongoose.connect('mongodb://localhost:27017/blog-test', {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-})
+mongoose
+    .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+    })
+    .then(() => console.log('Connecter a MongoDB Cloud', ))
+    .catch(err => console.log(err));
 
 const mongoStore = MongoStore(expressSession)
 
@@ -180,7 +185,7 @@ app.get("/contact", (req, res) => {
 })
 
 //Error 404
-app.use( (req, res) => {
+app.use((req, res) => {
     res.render('error404')
 })
 
