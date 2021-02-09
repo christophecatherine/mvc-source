@@ -57,18 +57,20 @@ const userLogout = require('./controllers/userLogout')
 // Notre app va chercher express
 const app = express();
 
-require('dotenv').config()
+const db = require('dotenv').config()
 
 //Connect mongoose a base de donnee
+const db = require('./config/keys').MONGO_URI
 mongoose
-    .connect(process.env.MONGO_URI, {
+    .connect(db,process.env.MONGO_URI, {
         useNewUrlParser: true,
         useFindAndModify: false,
         useCreateIndex: true,
         useUnifiedTopology: true,
         useNewUrlParser: true
     })
-    .then(() => console.log('Connecter a MongoDB Cloud', ))
+    //MongoDB connect a la base de donnée 
+    .then(() => console.log('Connecter à MongoDB Cloud' ))
     .catch(err => console.log(err));
 
 const mongoStore = MongoStore(expressSession)
