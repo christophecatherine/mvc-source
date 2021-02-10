@@ -57,16 +57,21 @@ const userLogout = require('./controllers/userLogout')
 // Notre app va chercher express
 const app = express();
 
-require('dotenv').config()
+
+//MongoDB
+//require('dotenv').config()
+
+const db = require('./config/keys.js').MongoURI
 
 mongoose
-    .connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useNewUrlParser: true
-    })
+    .connect (db, { useNewUrlParser: true })
+    //(process.env.MONGO_URI,db, {
+    //   useNewUrlParser: true,
+      //  useFindAndModify: false,
+       // useCreateIndex: true,
+        //useUnifiedTopology: true,
+      //  useNewUrlParser: true
+   // })
     //MongoDB connect a la base de donnée 
     .then(() => console.log('Connecter à MongoDB Cloud'))
     .catch(err => console.log(err));
