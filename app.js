@@ -59,21 +59,21 @@ const app = express();
 
 
 //MongoDB
-//require('dotenv').config()
+require('dotenv').config()
 
 const db = require('./config/keys.js').MongoURI
 
 mongoose
-    .connect (db, { useNewUrlParser: true })
-    //(process.env.MONGO_URI,db, {
-    //   useNewUrlParser: true,
-      //  useFindAndModify: false,
-       // useCreateIndex: true,
-        //useUnifiedTopology: true,
-      //  useNewUrlParser: true
-   // })
-    //MongoDB connect a la base de donnée 
-    .then(() => console.log('Connecter à MongoDB Cloud'))
+    .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+    })
+
+
+//MongoDB connect a la base de donnée 
+.then(() => console.log('Connecter à MongoDB Cloud'))
     .catch(err => console.log(err));
 
 const mongoStore = MongoStore(expressSession)
