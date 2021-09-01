@@ -22,7 +22,7 @@
         "express-session": "^1.17.1",
         "handlebars-helpers": "^0.10.0",
         "handlebars.moment": "^1.0.4",
-        "mongoose": "^5.11.14"
+        "mongoose": "^6.0.4"
     },
     "engines": {
         "node": "12.x"
